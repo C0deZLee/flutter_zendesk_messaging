@@ -61,6 +61,18 @@ public class SwiftZendeskMessagingPlugin: NSObject, FlutterPlugin {
             case "isInitialized":
                 result(handleInitializedStatus())
                 break
+            // Add this case to handle the "registerForPushNotifications" call
+            case "registerForPushNotifications":
+                zendeskMessaging.registerForPushNotifications()
+                result(nil)
+
+            // Add this case to handle the "updatePushNotificationToken" call
+            case "updatePushNotificationToken":
+                if let deviceToken = (call.arguments as? [String: Any])?["deviceToken"] as? FlutterStandardTypedData {
+                    zendeskMessaging.updatePushNotificationToken(deviceToken: deviceToken.data)
+                }
+        result(nil)
+
             default:
                 break
         }
@@ -76,4 +88,5 @@ public class SwiftZendeskMessagingPlugin: NSObject, FlutterPlugin {
     private func handleInitializedStatus() ->Bool{
         return isInitialized
     }
+    
 }

@@ -75,6 +75,41 @@ class ZendeskMessagingPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
                 result.success(zendeskMessaging.getUnreadMessageCount())
             }
+
+            "updatePushNotificationToken" -> {
+                if (!isInitialized) {
+                    println("$tag - Messaging needs to be initialized first")
+                    return
+                }
+
+                try {
+                    val token = call.argument<String>("token")
+                    zendeskMessaging.updatePushNotificationToken(token)
+                } catch (err: Throwable) {
+                    println("$tag - Messaging::updatePushNotificationToken invalid arguments. {'token': '<your_token>'} expected !")
+                    println(err.message)
+                    return
+                }
+            }
+            "handleRemoteMessage" -> {
+                if (!isInitialized) {
+                    println("$tag - Messaging needs to be initialized first")
+                    return
+                }
+
+                try {
+                    val data = call.argument<Map<String, String>>("data")
+                    if (data == null || data.isEmpty()) {
+                        throw Exception("Data is empty or null")
+                    }
+                    zendeskMessaging.handleRemoteMessage(data)
+                } catch (err: Throwable) {
+                    println("$tag - Messaging::handleRemoteMessage invalid arguments. {'data': '<your_data>'} expected !")
+                    println(err.message)
+                    return
+                }
+            }
+
             else -> {
                 result.notImplemented()
             }

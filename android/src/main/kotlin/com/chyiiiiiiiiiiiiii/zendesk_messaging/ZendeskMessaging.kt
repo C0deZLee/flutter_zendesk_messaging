@@ -8,7 +8,7 @@ import zendesk.android.Zendesk
 import zendesk.android.ZendeskResult
 import zendesk.android.ZendeskUser
 import zendesk.messaging.android.DefaultMessagingFactory
-
+import zendesk.messaging.android.push.PushNotifications
 
 class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val channel: MethodChannel) {
     companion object {
@@ -21,6 +21,10 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
         const val loginFailure: String = "login_failure"
         const val logoutSuccess: String = "logout_success"
         const val logoutFailure: String = "logout_failure"
+        const val updateTokenSuccess: String = "update_token_success"
+        const val updateTokenFailure: String = "update_token_failure"
+        const val displayNotificationSuccess: String = "display_notification_success"
+        const val displayNotificationFailure: String = "display_notification_failure"
     }
 
 
@@ -84,6 +88,33 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
             } catch (error: Throwable) {
                 println("$tag - Logout failure : ${error.message}")
                 channel.invokeMethod(logoutFailure, mapOf("error" to error.message))
+            }
+        }
+    }
+
+    fun updatePushNotificationToken(token: String?) {
+        try {
+            PushNotifications.updatePushNotificationToken(token)
+            channel.invokeMethod(updateTokenSuccess, null)
+        } catch (error: Throwable) {
+            println("$tag - Update token failure : ${error.message}")
+            channel.invokeMethod(updateTokenFailure, mapOf("error" to error.message))
+        }
+    }
+
+    fun handleRemoteMessage(data: Map<String, String>) {
+        val responsibility = PushNotifications.shouldBeDisplayed(data)
+
+        when (responsibility) {
+            PushNotifications.PushResponsibility.MESSAGING_SHOULD_DISPLAY -> {
+                PushNotifications.displayNotification(plugin.activity!!, data)
+                channel.invokeMethod(displayNotificationSuccess, null)
+            }
+            PushNotifications.PushResponsibility.MESSAGING_SHOULD_NOT_DISPLAY -> {
+                // This push belongs to Messaging but it should not be displayed to the end user
+            }
+            PushNotifications.PushResponsibility.NOT_FROM_MESSAGING -> {
+                // This push does not belong to Messaging
             }
         }
     }

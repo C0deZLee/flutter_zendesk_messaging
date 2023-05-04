@@ -64,7 +64,8 @@ class _MyAppState extends State<MyApp> {
                   ),
                   ElevatedButton(
                     onPressed: () => _getUnreadMessageCount(),
-                    child: Text('Get unread message count - $unreadMessageCount'),
+                    child:
+                        Text('Get unread message count - $unreadMessageCount'),
                   ),
                 ],
                 ElevatedButton(
