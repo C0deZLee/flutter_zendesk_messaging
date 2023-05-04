@@ -61,17 +61,25 @@ public class SwiftZendeskMessagingPlugin: NSObject, FlutterPlugin {
             case "isInitialized":
                 result(handleInitializedStatus())
                 break
-            // Add this case to handle the "registerForPushNotifications" call
-            case "registerForPushNotifications":
-                zendeskMessaging.registerForPushNotifications()
-                result(nil)
 
             // Add this case to handle the "updatePushNotificationToken" call
             case "updatePushNotificationToken":
-                if let deviceToken = (call.arguments as? [String: Any])?["deviceToken"] as? FlutterStandardTypedData {
-                    zendeskMessaging.updatePushNotificationToken(deviceToken: deviceToken.data)
+                if (!isInitialized) {
+                    print("\(TAG) - Messaging needs to be initialized first.\n")
                 }
-        result(nil)
+                let deviceToken: String = (arguments?["deviceToken"] ?? "") as! String
+                zendeskMessaging.updatePushNotificationToken(deviceToken: deviceToken)
+                break
+
+            // TODO: Add this case to handle the "handleRemoteMessage" call
+            case "handleZendeskNotification":
+                guard let args = call.arguments as? [String: Any],
+                      let data = args["data"] as? [String: String] else {
+                    result(FlutterError(code: "INVALID_ARGUMENTS", message: "Invalid arguments. Expected 'data' as a dictionary.", details: nil))
+                    return
+                }
+                zendeskMessaging.handleZendeskNotification(data: data)
+                break
 
             default:
                 break

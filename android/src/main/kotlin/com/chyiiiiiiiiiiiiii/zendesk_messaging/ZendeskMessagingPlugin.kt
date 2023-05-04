@@ -75,7 +75,6 @@ class ZendeskMessagingPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
                 result.success(zendeskMessaging.getUnreadMessageCount())
             }
-
             "updatePushNotificationToken" -> {
                 if (!isInitialized) {
                     println("$tag - Messaging needs to be initialized first")
@@ -83,15 +82,15 @@ class ZendeskMessagingPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
 
                 try {
-                    val token = call.argument<String>("token")
-                    zendeskMessaging.updatePushNotificationToken(token)
+                    val token = call.argument<String>("deviceToken")
+                    zendeskMessaging.updatePushNotificationToken(deviceToken)
                 } catch (err: Throwable) {
-                    println("$tag - Messaging::updatePushNotificationToken invalid arguments. {'token': '<your_token>'} expected !")
+                    println("$tag - Messaging::updatePushNotificationToken invalid arguments. {'deviceToken': '<your_token>'} expected !")
                     println(err.message)
                     return
                 }
             }
-            "handleRemoteMessage" -> {
+            "handleZendeskNotification" -> {
                 if (!isInitialized) {
                     println("$tag - Messaging needs to be initialized first")
                     return
@@ -102,7 +101,7 @@ class ZendeskMessagingPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     if (data == null || data.isEmpty()) {
                         throw Exception("Data is empty or null")
                     }
-                    zendeskMessaging.handleRemoteMessage(data)
+                    zendeskMessaging.handleZendeskNotification(data)
                 } catch (err: Throwable) {
                     println("$tag - Messaging::handleRemoteMessage invalid arguments. {'data': '<your_data>'} expected !")
                     println(err.message)

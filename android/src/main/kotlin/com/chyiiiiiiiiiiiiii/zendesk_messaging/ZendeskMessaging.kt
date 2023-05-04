@@ -21,10 +21,6 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
         const val loginFailure: String = "login_failure"
         const val logoutSuccess: String = "logout_success"
         const val logoutFailure: String = "logout_failure"
-        const val updateTokenSuccess: String = "update_token_success"
-        const val updateTokenFailure: String = "update_token_failure"
-        const val displayNotificationSuccess: String = "display_notification_success"
-        const val displayNotificationFailure: String = "display_notification_failure"
     }
 
 
@@ -92,17 +88,11 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
         }
     }
 
-    fun updatePushNotificationToken(token: String?) {
-        try {
-            PushNotifications.updatePushNotificationToken(token)
-            channel.invokeMethod(updateTokenSuccess, null)
-        } catch (error: Throwable) {
-            println("$tag - Update token failure : ${error.message}")
-            channel.invokeMethod(updateTokenFailure, mapOf("error" to error.message))
-        }
+    fun updatePushNotificationToken(deviceToken: String?) {
+        PushNotifications.updatePushNotificationToken(deviceToken)
     }
 
-    fun handleRemoteMessage(data: Map<String, String>) {
+    fun handleZendeskNotification(data: Map<String, String>) {
         val responsibility = PushNotifications.shouldBeDisplayed(data)
 
         when (responsibility) {

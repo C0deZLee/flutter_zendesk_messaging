@@ -184,23 +184,24 @@ class ZendeskMessaging {
     }
   }
 
-  // Add this method to register for push notifications
-  static Future<void> registerForPushNotifications() async {
-    try {
-      await _channel.invokeMethod('registerForPushNotifications');
-    } catch (e) {
-      debugPrint('ZendeskMessaging - registerForPushNotifications - Error: $e');
-    }
-  }
-
   // Add this method to update the push notification token
   static Future<void> updatePushNotificationToken(
-      {required Uint8List deviceToken}) async {
+      {required String deviceToken}) async {
     try {
       await _channel.invokeMethod(
           'updatePushNotificationToken', {'deviceToken': deviceToken});
     } catch (e) {
       debugPrint('ZendeskMessaging - updatePushNotificationToken - Error: $e');
+    }
+  }
+
+    static Future<void> handleZendeskNotification(
+      {required Map<String, String> data}) async {
+    try {
+      await _channel.invokeMethod(
+          'handleZendeskNotification', {'data': data});
+    } catch (e) {
+      debugPrint('ZendeskMessaging - handleZendeskNotification - Error: $e');
     }
   }
 
