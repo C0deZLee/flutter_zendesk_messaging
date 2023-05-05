@@ -98,7 +98,7 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
         when (responsibility) {
             PushNotifications.PushResponsibility.MESSAGING_SHOULD_DISPLAY -> {
                 PushNotifications.displayNotification(plugin.activity!!, data)
-                channel.invokeMethod(displayNotificationSuccess, null)
+                // channel.invokeMethod(displayNotificationSuccess, null)
             }
             PushNotifications.PushResponsibility.MESSAGING_SHOULD_NOT_DISPLAY -> {
                 // This push belongs to Messaging but it should not be displayed to the end user
