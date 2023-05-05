@@ -93,20 +93,20 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
     }
 
     fun handleZendeskNotification(data: Map<String, String>) {
-        val responsibility = PushNotifications.shouldBeDisplayed(data)
+        // val responsibility = PushNotifications.shouldBeDisplayed(data)
 
-        when (responsibility) {
-            PushNotifications.PushResponsibility.MESSAGING_SHOULD_DISPLAY -> {
-                PushNotifications.displayNotification(plugin.activity!!, data)
-                // channel.invokeMethod(displayNotificationSuccess, null)
-            }
-            PushNotifications.PushResponsibility.MESSAGING_SHOULD_NOT_DISPLAY -> {
-                // This push belongs to Messaging but it should not be displayed to the end user
-            }
-            PushNotifications.PushResponsibility.NOT_FROM_MESSAGING -> {
-                // This push does not belong to Messaging
-            }
-        }
+        // when (responsibility) {
+        //     PushNotifications.PushResponsibility.MESSAGING_SHOULD_DISPLAY -> {
+        //         PushNotifications.displayNotification(plugin.activity!!, data)
+        //         // channel.invokeMethod(displayNotificationSuccess, null)
+        //     }
+        //     PushNotifications.PushResponsibility.MESSAGING_SHOULD_NOT_DISPLAY -> {
+        //         // This push belongs to Messaging but it should not be displayed to the end user
+        //     }
+        //     PushNotifications.PushResponsibility.NOT_FROM_MESSAGING -> {
+        //         // This push does not belong to Messaging
+        //     }
+        // }
     }
 }
 
