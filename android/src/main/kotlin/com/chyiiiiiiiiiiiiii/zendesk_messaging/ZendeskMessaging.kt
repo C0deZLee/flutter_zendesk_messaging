@@ -88,7 +88,7 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
         }
     }
 
-    fun updatePushNotificationToken(deviceToken: String?) {
+    fun updatePushNotificationToken(deviceToken: String) {
         PushNotifications.updatePushNotificationToken(deviceToken)
     }
 

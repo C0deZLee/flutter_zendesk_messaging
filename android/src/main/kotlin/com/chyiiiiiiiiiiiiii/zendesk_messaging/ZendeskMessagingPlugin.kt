@@ -82,7 +82,7 @@ class ZendeskMessagingPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
 
                 try {
-                    val token = call.argument<String>("deviceToken")
+                    val deviceToken = call.argument<String>("deviceToken")
                     zendeskMessaging.updatePushNotificationToken(deviceToken)
                 } catch (err: Throwable) {
                     println("$tag - Messaging::updatePushNotificationToken invalid arguments. {'deviceToken': '<your_token>'} expected !")
