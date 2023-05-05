@@ -76,7 +76,7 @@ public class ZendeskMessaging: NSObject {
 
     // Add this method to update the PushNotifications class with the received device token
     func updatePushNotificationToken(deviceToken: String) {
-        PushNotifications.updatePushNotificationToken(deviceToken.data(using: .utf8))
+        PushNotifications.updatePushNotificationToken(deviceToken.data(using: .utf8)!)
     }
 
     func handleZendeskNotification(data: [String: String]) {
